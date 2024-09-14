@@ -1,7 +1,6 @@
-package test
+package authjsgo
 
 import (
-	"github.com/ajipaon/authjsgo"
 	"testing"
 )
 
@@ -11,7 +10,7 @@ func TestDecodeJWT(t *testing.T) {
 	secret := []byte("2f9340a0d055fa9f6d9c08e52aabb80b4ab25c7d7f6fd5dc0e3f6c14dd104e18")
 	salt := []byte("mywebsite.session-token")
 
-	payload, err := authjsgo.DecodeJWT(token, secret, salt, true)
+	payload, err := DecodeJWT(token, secret, salt, true)
 
 	if err != nil {
 		t.Fatal(err)
