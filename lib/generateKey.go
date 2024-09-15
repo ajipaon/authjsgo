@@ -4,16 +4,15 @@ import (
 	"gopkg.in/square/go-jose.v2"
 )
 
-func GeneratedKey(token string, secret, salt []byte) ([]byte, error) {
+func GeneratedKey(jws *jose.JSONWebEncryption, secret, salt []byte) ([]byte, error) {
 
-	jws, err := jose.ParseEncrypted(token)
-	if err != nil {
-		return nil, err
-	}
 	kid := jws.Header.KeyID
 	enc := jws.Header.ExtraHeaders["enc"].(string)
 
 	encryptionSecret, err := getDerivedEncryptionKey(enc, secret, salt)
+	if err != nil {
+		return nil, err
+	}
 
 	if kid == "" {
 		return encryptionSecret, nil
@@ -33,5 +32,5 @@ func GeneratedKey(token string, secret, salt []byte) ([]byte, error) {
 		return encryptionSecret, nil
 	}
 
-	return nil, nil
+	return []byte(thumbprint), nil
 }

@@ -33,35 +33,42 @@ only for auth.js or nextauth v5
 
 ### [documentation jwt authjs](https://authjs.dev/reference/core/jwt)
 
-## Usage: `authjsgo.DecodeJWT ignore expired`
+## Usage: `ignore expired`
 
 ```go
 package main
 
 import (
 	"github.com/ajipaon/authjsgo"
+	"encoding/json"
+	"fmt"
 )
 
 func main() {
 	token := "your token"
 	secret := []byte("your secret")
-	salt := []byte("mywebsite.session-token") // use session name token
+	salt := []byte("mywebsite.session-token") // use session name
 
-	payload, err := authjsgo.DecodeJWT(token, secret, salt, true) 
-	if err != nil {
-		t.Fatal(err)
+	payload, _ := authjsgo.DecodeJWT(token, secret, salt, true)
+	
+	var claims map[string]interface{}
+	if err := json.Unmarshal(payload, &claims); err != nil {
+		fmt.Println("Error decode json:", err)
+		return
 	}
-	t.Log(string(payload))
+	fmt.Println(claims)
 }
 ```
 
-## Usage: `authjsgo.DecodeJWT wit expired`
+## Usage: `with expired`
 
 ```go
 package main
 
 import (
 	"github.com/ajipaon/authjsgo"
+	"encoding/json"
+	"fmt"
 )
 
 func main() {
@@ -70,11 +77,14 @@ func main() {
 	secret := []byte("your secret")
 	salt := []byte("mywebsite.session-token") // use session name
 
-	payload, err := authjsgo.DecodeJWT(token, secret, salt, true)
-	if err != nil {
-		t.Fatal(err)
+	payload, _ := authjsgo.DecodeJWT(token, secret, salt)
+	
+	var claims map[string]interface{}
+	if err := json.Unmarshal(payload, &claims); err != nil {
+		fmt.Println("Error decode json:", err)
+		return
 	}
-	t.Log(string(payload))
+	fmt.Println(claims)
 }
 ```
 

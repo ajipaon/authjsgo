@@ -5,7 +5,6 @@ import (
 	"github.com/ajipaon/authjsgo/lib"
 	"gopkg.in/square/go-jose.v2"
 	"gopkg.in/square/go-jose.v2/json"
-	"log"
 	"time"
 )
 
@@ -14,29 +13,28 @@ func DecodeJWT(token string, secret, salt []byte, ignoreExp ...bool) ([]byte, er
 	if len(ignoreExp) == 0 {
 		ignoreExp = []bool{false}
 	}
-
 	if token == "" {
 		return nil, nil
 	}
+	jws, err := jose.ParseEncrypted(token)
 
-	getKey, err := authjsgo.GeneratedKey(token, secret, salt)
+	if err != nil {
+		return nil, errors.New("failed to parse encrypted JWT")
+	}
+	getKey, err := authjsgo.GeneratedKey(jws, secret, salt)
 
 	if err != nil {
 		return nil, err
 	}
-
-	jws, err := jose.ParseEncrypted(token)
 	var claim map[string]interface{}
 	data, err := jws.Decrypt(getKey)
 
 	if err != nil {
-		log.Println("Failed to decode JWT:", err)
 		return nil, err
 	}
 
 	if ignoreExp[0] {
 		return data, nil
-
 	}
 
 	err = json.Unmarshal(data, &claim)

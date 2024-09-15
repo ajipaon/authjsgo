@@ -8,7 +8,7 @@ import (
 	"io"
 )
 
-func getDerivedEncryptionKey(enc string, keyMaterial, salt []byte) ([]byte, error) {
+func getDerivedEncryptionKey(enc string, secret, salt []byte) ([]byte, error) {
 	var length int
 	switch enc {
 	case "A256CBC-HS512":
@@ -19,8 +19,7 @@ func getDerivedEncryptionKey(enc string, keyMaterial, salt []byte) ([]byte, erro
 		return nil, errors.New("unsupported JWT content encryption algorithm")
 	}
 
-	hash := sha256.New
-	reader := hkdf.New(hash, keyMaterial, salt, []byte(fmt.Sprintf("Auth.js Generated Encryption Key (%s)", salt)))
+	reader := hkdf.New(sha256.New, secret, salt, []byte(fmt.Sprintf("Auth.js Generated Encryption Key (%s)", salt)))
 	key := make([]byte, length)
 	if _, err := io.ReadFull(reader, key); err != nil {
 		return nil, err
