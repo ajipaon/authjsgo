@@ -1,7 +1,7 @@
 # authjsgo
 
 
-[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
+[![Apache License](http://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)][license]
 [![Go Documentation](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)][godocs]
 [![Go Report Card](https://goreportcard.com/badge/github.com/ajipaon/authjsgo)][goreportcard]
 
