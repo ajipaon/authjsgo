@@ -9,7 +9,7 @@ import (
 )
 
 func getDerivedEncryptionKey(enc string, secret, salt []byte) ([]byte, error) {
-	var length int
+	var length int8
 	switch enc {
 	case "A256CBC-HS512":
 		length = 64

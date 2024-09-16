@@ -23,7 +23,7 @@ func calculateJwkThumbprint(jwk JWK, digestAlgorithm string) (string, error) {
 		return "", err
 	}
 
-	components, err := getJwkComponents(jwk)
+	components, err := checkingJwkComponents(jwk)
 	if err != nil {
 		return "", err
 	}
@@ -52,7 +52,7 @@ func getHashFunc(digestAlgorithm string) (func() hash.Hash, error) {
 	}
 }
 
-func getJwkComponents(jwk JWK) (map[string]string, error) {
+func checkingJwkComponents(jwk JWK) (map[string]string, error) {
 	switch jwk.Kty {
 	case "EC":
 		if jwk.Crv == "" || jwk.X == "" || jwk.Y == "" {
