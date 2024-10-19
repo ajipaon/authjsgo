@@ -37,7 +37,7 @@ func DecodeJWT(token string, secret, salt []byte, ignoreExp ...bool) ([]byte, er
 		return data, nil
 	}
 
-	err = json.Unmarshal(data, &claim)
+	_ = json.Unmarshal(data, &claim)
 	exp, ok := claim["exp"].(float64)
 
 	if !ok {
